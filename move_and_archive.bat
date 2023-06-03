@@ -3,6 +3,14 @@
 REM README: execute this script using move_and_archive.bat <source_directory> <target_directory> <file_name>
 REM Example: move_and_archive.bat C:\Users\user\Desktop\source C:\Users\user\Desktop\target file.txt
 
+REM Check if the script has execute permissions
+icacls %0 | find "Mandatory Label\High Mandatory Level" >nul
+if not errorlevel 1 (
+    echo Error: Script does not have execute permissions. Please right-click on the script file, select 'Properties', go to the 'Security' tab, and ensure that the user running the script has 'Read & execute' permissions.
+    exit /b 1
+)
+
+
 REM Check if the correct number of arguments were provided
 if "%~3"=="" (
     echo Usage: %0 ^<source_directory^> ^<target_directory^> ^<file_name^>
