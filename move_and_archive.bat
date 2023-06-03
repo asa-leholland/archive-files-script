@@ -1,6 +1,6 @@
 @echo off
 
-REM README: execute this script usin move_and_archive.bat <source_directory> <target_directory> <file_name>
+REM README: execute this script using move_and_archive.bat <source_directory> <target_directory> <file_name>
 REM Example: move_and_archive.bat C:\Users\user\Desktop\source C:\Users\user\Desktop\target file.txt
 
 REM Check if the correct number of arguments were provided
@@ -32,21 +32,21 @@ if not exist "%src_dir%\%file_name%" (
     exit /b 1
 )
 
+REM Archive the old file in the target directory with an "OLD" extension for backup if it exists
+if exist "%tgt_dir%\%file_name%" (
+    move /y "%tgt_dir%\%file_name%" "%tgt_dir%\%~n3.OLD%~x3"
+    REM Check if the archive was successful
+    if errorlevel 1 (
+        echo Error: Failed to archive old file '%file_name%' in target directory '%tgt_dir%'.
+        exit /b 1
+    )
+)
+
 REM Move the file to the target directory
 move /y "%src_dir%\%file_name%" "%tgt_dir%\%file_name%"
-
 REM Check if the move was successful
 if errorlevel 1 (
     echo Error: Failed to move file '%file_name%' from source directory '%src_dir%' to target directory '%tgt_dir%'.
-    exit /b 1
-)
-
-REM Archive the old file in the target directory with an "OLD" extension for backup
-move /y "%tgt_dir%\%file_name%" "%tgt_dir%\%~n3.OLD%~x3"
-
-REM Check if the archive was successful
-if errorlevel 1 (
-    echo Error: Failed to archive old file '%file_name%' in target directory '%tgt_dir%'.
     exit /b 1
 )
 
